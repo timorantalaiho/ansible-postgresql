@@ -28,6 +28,10 @@
 - name: Create conf.d
   file: path={{ postgresql_conf_dir }}/conf.d state=directory owner=postgres group=postgres
 
+- name: Ensure postgresql.conf file exists
+  sudo_user: postgres
+  file: path={{ postgresql_conf_dir }}/postgresql.conf state=touch mode=0600
+
 - name: Set conf.d include in postgresql.conf
   lineinfile: line="include_dir 'conf.d'" dest={{ postgresql_conf_dir }}/postgresql.conf backup=yes
   notify: Reload PostgreSQL
